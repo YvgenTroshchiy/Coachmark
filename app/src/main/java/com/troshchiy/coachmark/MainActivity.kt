@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val anchorView = findViewById<ImageView>(R.id.image)
+        val anchorView = findViewById<ImageView>(R.id.heart)
 
         val rootView = anchorView.rootView as ViewGroup
         val view = OverlayView(this, anchorView)

@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/image"
+            android:id="@+id/heart"
             android:layout_gravity="end"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
@@ -25,13 +25,26 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <ImageView
+        android:id="@+id/dress"
+        android:layout_height="300dp"
+        android:layout_marginTop="24dp"
+        android:layout_width="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/banana_dress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
     <TextView
         android:layout_height="wrap_content"
-        android:layout_margin="60dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_width="0dp"
         android:text="The DecorView is the view that actually holds the window’s background drawable. Calling getWindow().setBackgroundDrawable() from your Activity changes the background of the window by changing the DecorView‘s background drawable. As mentioned before, this setup is very specific to the current implementation of Android and can change in a future version or even on another device."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/dress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
