@@ -71,16 +71,23 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
             )
         }
 
-        // Draw details circle
-        canvas.save()
         clipOutPath(canvas, anchorCirclePath)
-        canvas.drawCircle(detailsCircleCenter.x, detailsCircleCenter.y, detailsRadius, detailsPaint)
-        canvas.restore()
+
+        canvas.drawColor(context.getColor(R.color.bg_dim))
+        canvas.drawCircle(detailsCircleCenter.x, detailsCircleCenter.y, detailsRadius, Paint().apply { color = context.getColor(R.color.details_dim) })
+
+        canvas.drawCircle(anchorCenter.x, anchorCenter.y, anchorRadius, Paint().apply { color = context.getColor(R.color.details_dim) })
+
+        // Draw details circle
+//        canvas.save()
+//        clipOutPath(canvas, anchorCirclePath)
+//        canvas.drawCircle(detailsCircleCenter.x, detailsCircleCenter.y, detailsRadius, detailsPaint)
+//        canvas.restore()
 
         // Draw background
-        canvas.save()
-        clipOutPath(canvas, detailsCirclePath)
-        canvas.drawColor(context.getColor(R.color.bg_dim))
+//        canvas.save()
+//        clipOutPath(canvas, detailsCirclePath)
+//        canvas.drawColor(context.getColor(R.color.bg_dim))
     }
 
     private fun clipOutPath(canvas: Canvas, path: Path) {

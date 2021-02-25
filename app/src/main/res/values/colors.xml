@@ -12,6 +12,6 @@
     <color name="red">#FF0000</color>
 
     <color name="bg_dim">#B31D1D1D</color>
-    <color name="details_dim">#34000000</color>
+    <color name="details_dim">#99FFFFFF</color>
 
 </resources>
