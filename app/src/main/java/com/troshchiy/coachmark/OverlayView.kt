@@ -35,7 +35,12 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
 
     private val backgroundPaint = Paint().apply {
         isAntiAlias = true
-        color = context.getColor(R.color.dim_strong)
+        color = context.getColor(R.color.bg_dim)
+    }
+
+    private val detailsPaint = Paint().apply {
+        isAntiAlias = true
+        color = context.getColor(R.color.details_dim)
     }
 
     init {
@@ -68,17 +73,16 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
         val detailsCirclePath = Path().apply {
             addCircle(bigCircleCenter.x, bigCircleCenter.y, detailsRadius, Path.Direction.CW)
         }
-
-        val anchorCirclePath = Path().apply {
-            addCircle(500f, 500f, 100f, Path.Direction.CW)
-        }
-
         clipOutPath(canvas, detailsCirclePath)
 
-        canvas.drawColor(context.getColor(R.color.dim_strong))
+        canvas.drawColor(context.getColor(R.color.bg_dim))
         canvas.restore()
 
-        canvas.drawCircle(bigCircleCenter.x, bigCircleCenter.y, detailsRadius, backgroundPaint)
+        val anchorCirclePath = Path().apply {
+            addCircle(anchorCenter.x, anchorCenter.y, anchorRadius, Path.Direction.CW)
+        }
+        clipOutPath(canvas, anchorCirclePath)
+        canvas.drawCircle(bigCircleCenter.x, bigCircleCenter.y, detailsRadius, detailsPaint)
 
     }
 
