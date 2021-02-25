@@ -3,10 +3,10 @@ package com.troshchiy.coachmark
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.PointF
+import android.graphics.*
+import android.os.Build
+import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 
 val Int.dpToPx: Int
@@ -15,53 +15,78 @@ val Int.dpToPx: Int
 val Float.dpToPx: Int
     get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
 
+
+class ClippedView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr) {
+}
+
 class OverlayView(context: Context, private val anchorView: View) : View(context) {
 
-
-    private val bitmap: Bitmap? = null
-
-    private val smallRadius = 28.dpToPx.toFloat()
-    private val bigRadius = 180.dpToPx.toFloat()
-
-    private val bigCircleXOffsetRatio = 0.92f
-    private val bigCircleYOffsetRatio = 1.7f
-
+    private val anchorRadius = 28.dpToPx.toFloat()
     private val anchorViewLocation = IntArray(2)
 
-    private val backgroundPaint = Paint()
+    private val detailsRadius = 180.dpToPx.toFloat()
+
+    private val detailsCircleXOffsetRatio = 0.92f
+    private val detailsCircleYOffsetRatio = 1.7f
+
+    private val backgroundPaint = Paint().apply {
+        isAntiAlias = true
+        color = context.getColor(R.color.dim_strong)
+    }
 
     init {
 //         setWillNotDraw(false)
 //        setLayerType(LAYER_TYPE_HARDWARE, null);
 
 //        backgroundPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-        backgroundPaint.color = context.getColor(R.color.dim_strong)
-        backgroundPaint.alpha = 160
-
     }
 
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        canvas.save()
+
+        Log.w("OverlayView", "onDraw")
 
         anchorView.getLocationInWindow(anchorViewLocation)
 
-        val circleCenter = PointF(
+        val anchorCenter = PointF(
             anchorViewLocation[0].toFloat() + anchorView.width / 2,
             anchorViewLocation[1].toFloat() + anchorView.height / 2
         )
 
-        canvas.drawCircle(circleCenter.x, circleCenter.y, smallRadius, backgroundPaint)
-        canvas.drawCircle(
-            circleCenter.x * bigCircleXOffsetRatio,
-            circleCenter.y * bigCircleYOffsetRatio,
-            bigRadius,
-            backgroundPaint
-        )
+        val bigCircleCenter =
+            PointF(
+                anchorCenter.x * detailsCircleXOffsetRatio,
+                anchorCenter.y * detailsCircleYOffsetRatio
+            )
+
+        val detailsCirclePath = Path().apply {
+            addCircle(bigCircleCenter.x, bigCircleCenter.y, detailsRadius, Path.Direction.CW)
+        }
+
+        val anchorCirclePath = Path().apply {
+            addCircle(500f, 500f, 100f, Path.Direction.CW)
+        }
+
+        clipOutPath(canvas, detailsCirclePath)
+
+        canvas.drawColor(context.getColor(R.color.dim_strong))
+        canvas.restore()
+
+        canvas.drawCircle(bigCircleCenter.x, bigCircleCenter.y, detailsRadius, backgroundPaint)
 
     }
 
-    override fun dispatchDraw(canvas: Canvas?) {
-        super.dispatchDraw(canvas)
+    private fun clipOutPath(canvas: Canvas, path: Path) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            canvas.clipOutPath(path);
+        } else {
+            canvas.clipPath(path, Region.Op.DIFFERENCE);
+        }
     }
 }
