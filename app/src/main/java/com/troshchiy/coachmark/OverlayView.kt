@@ -45,7 +45,6 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.save()
 
         Log.w("OverlayView", "onDraw")
 
@@ -55,27 +54,33 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
             anchorViewLocation[0].toFloat() + anchorView.width / 2,
             anchorViewLocation[1].toFloat() + anchorView.height / 2
         )
-
-        val bigCircleCenter =
+        val anchorCirclePath = Path().apply {
+            addCircle(anchorCenter.x, anchorCenter.y, anchorRadius, Path.Direction.CW)
+        }
+        val detailsCircleCenter =
             PointF(
                 anchorCenter.x * detailsCircleXOffsetRatio,
                 anchorCenter.y * detailsCircleYOffsetRatio
             )
-
         val detailsCirclePath = Path().apply {
-            addCircle(bigCircleCenter.x, bigCircleCenter.y, detailsRadius, Path.Direction.CW)
+            addCircle(
+                detailsCircleCenter.x,
+                detailsCircleCenter.y,
+                detailsRadius,
+                Path.Direction.CW
+            )
         }
-        clipOutPath(canvas, detailsCirclePath)
 
-        canvas.drawColor(context.getColor(R.color.bg_dim))
+        // Draw details circle
+        canvas.save()
+        clipOutPath(canvas, anchorCirclePath)
+        canvas.drawCircle(detailsCircleCenter.x, detailsCircleCenter.y, detailsRadius, detailsPaint)
         canvas.restore()
 
+        // Draw background
         canvas.save()
-        val anchorCirclePath = Path().apply {
-            addCircle(anchorCenter.x, anchorCenter.y, anchorRadius, Path.Direction.CW)
-        }
-        clipOutPath(canvas, anchorCirclePath)
-        canvas.drawCircle(bigCircleCenter.x, bigCircleCenter.y, detailsRadius, detailsPaint)
+        clipOutPath(canvas, detailsCirclePath)
+        canvas.drawColor(context.getColor(R.color.bg_dim))
     }
 
     private fun clipOutPath(canvas: Canvas, path: Path) {
