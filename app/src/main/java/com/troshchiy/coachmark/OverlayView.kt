@@ -33,21 +33,13 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
     private val detailsCircleXOffsetRatio = 0.92f
     private val detailsCircleYOffsetRatio = 1.7f
 
-    private val backgroundPaint = Paint().apply {
-        isAntiAlias = true
-        color = context.getColor(R.color.details_dim)
-    }
-
     private val detailsPaint = Paint().apply {
         isAntiAlias = true
         color = context.getColor(R.color.details_dim)
     }
 
     init {
-//         setWillNotDraw(false)
-//        setLayerType(LAYER_TYPE_HARDWARE, null);
 
-//        backgroundPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
     }
 
     @SuppressLint("DrawAllocation")
@@ -83,7 +75,7 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
             addCircle(anchorCenter.x, anchorCenter.y, anchorRadius, Path.Direction.CW)
         }
         clipOutPath(canvas, anchorCirclePath)
-        canvas.drawCircle(bigCircleCenter.x, bigCircleCenter.y, detailsRadius, backgroundPaint)
+        canvas.drawCircle(bigCircleCenter.x, bigCircleCenter.y, detailsRadius, detailsPaint)
     }
 
     private fun clipOutPath(canvas: Canvas, path: Path) {
