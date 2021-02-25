@@ -8,6 +8,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:background="@android:color/white"
+        android:elevation="4dp"
         android:id="@+id/toolbar"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
@@ -25,18 +26,31 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <TextView
+        android:id="@+id/text1"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:text="The DecorView is the view that actually holds the window’s background drawable. Calling getWindow().setBackgroundDrawable() from your Activity changes the background of the window by changing the DecorView‘s background drawable. As mentioned before, this setup is very specific to the current implementation of Android and can change in a future version or even on another device."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
     <ImageView
+        android:adjustViewBounds="true"
         android:id="@+id/dress"
-        android:layout_height="300dp"
-        android:layout_marginTop="24dp"
-        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_width="300dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/banana_dress"
+        android:src="@drawable/dress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <TextView
+        android:id="@+id/text2"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
