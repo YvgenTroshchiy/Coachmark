@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewManager
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.core.animation.doOnEnd
 
 val Int.dpToPx: Int
     get() = this.toFloat().dpToPx
@@ -53,7 +54,7 @@ class OverlayView(context: Context, parent: ViewManager, private val anchorView:
         interpolator = AccelerateDecelerateInterpolator()
 
         addUpdateListener { animation ->
-            dimAlpha = (animation.animatedValue as Float)
+            dimAlpha = animation.animatedValue as Float
             invalidate()
         }
     }
@@ -63,21 +64,31 @@ class OverlayView(context: Context, parent: ViewManager, private val anchorView:
         interpolator = AccelerateDecelerateInterpolator()
 
         addUpdateListener { animation ->
-            outerCircleAlpha = (animation.animatedValue as Float)
+            outerCircleAlpha = animation.animatedValue as Float
             invalidate()
         }
     }
 
-    private val animators: Array<ValueAnimator> = arrayOf(dimAnimator, outerCircleAnimator)
+    private val endAnimator = ValueAnimator.ofFloat(1f, 0f).apply {
+        interpolator = AccelerateDecelerateInterpolator()
+
+        addUpdateListener { animation ->
+            val value = animation.animatedValue as Float
+            dimAlpha *= value
+            outerCircleAlpha *= value
+            invalidate()
+        }
+
+        doOnEnd { parent.removeView(this@OverlayView) }
+    }
+
+    private val animators: Array<ValueAnimator> = arrayOf(dimAnimator, outerCircleAnimator, endAnimator)
 
     init {
         dimAnimator.start()
         outerCircleAnimator.start()
 
-        setOnClickListener {
-            //TODO: start end animation
-            parent.removeView(this)
-        }
+        setOnClickListener { endAnimator.start() }
     }
 
     @SuppressLint("DrawAllocation")
