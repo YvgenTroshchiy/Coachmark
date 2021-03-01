@@ -11,7 +11,7 @@
 
     <color name="red">#FF0000</color>
 
-    <color name="bg">#1D1D1D</color>
-    <color name="details_color">#FFFFFF</color>
+    <color name="dim">#1D1D1D</color>
+    <color name="outer_circle">#FFFFFF</color>
 
 </resources>

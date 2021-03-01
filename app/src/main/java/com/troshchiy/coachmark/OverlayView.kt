@@ -28,30 +28,30 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
 
     private val TAG = "OverlayView"
 
-    private val dimColor = context.getColor(R.color.bg)
+    private val dimColor = context.getColor(R.color.dim)
 
     private val anchorRadius = 28.dpToPx.toFloat()
     private val anchorViewLocation = IntArray(2)
 
     private val outerCircleRadius = 180.dpToPx.toFloat()
 
-    private val bgTargetAlpha = 0.6f
+    private val dimTargetAlpha = 0.6f
     private val outerCircleTargetAlpha = 0.6f
 
-    private var bgAlpha = 0f
+    private var dimAlpha = 0f
     private var outerCircleAlpha = 0f
 
-    private val outerCirclePaint = Paint().apply { color = context.getColor(R.color.details_color) }
+    private val outerCirclePaint = Paint().apply { color = context.getColor(R.color.outer_circle) }
 
     private val outerCircleXOffsetRatio = 0.92f
     private val outerCircleYOffsetRatio = 1.7f
 
-    private val bgAnimator = ValueAnimator.ofFloat(0f, bgTargetAlpha).apply {
+    private val dimAnimator = ValueAnimator.ofFloat(0f, dimTargetAlpha).apply {
         duration = 500
         interpolator = AccelerateDecelerateInterpolator()
 
         addUpdateListener { animation ->
-            bgAlpha = (animation.animatedValue as Float)
+            dimAlpha = (animation.animatedValue as Float)
             invalidate()
         }
     }
@@ -66,11 +66,11 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
         }
     }
 
-    private val animators: Array<ValueAnimator> = arrayOf(bgAnimator, outerCircleAnimator)
+    private val animators: Array<ValueAnimator> = arrayOf(dimAnimator, outerCircleAnimator)
 
     init {
         outerCircleAnimator.start()
-        postDelayed({ bgAnimator.start() }, 100)
+        postDelayed({ dimAnimator.start() }, 100)
     }
 
     @SuppressLint("DrawAllocation")
@@ -90,7 +90,7 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
         val detailsCircleCenter = PointF(anchorCenter.x * outerCircleXOffsetRatio, anchorCenter.y * outerCircleYOffsetRatio)
 
         clipOutPath(canvas, anchorCirclePath)
-        canvas.drawColor(setAlpha(dimColor, bgAlpha))
+        canvas.drawColor(setAlpha(dimColor, dimAlpha))
 
         outerCirclePaint.alpha = (outerCircleAlpha * 255.0f).toInt()
         canvas.drawCircle(detailsCircleCenter.x, detailsCircleCenter.y, outerCircleRadius, outerCirclePaint)
