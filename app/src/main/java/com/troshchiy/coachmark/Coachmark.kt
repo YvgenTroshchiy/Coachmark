@@ -28,7 +28,7 @@ class ClippedView @JvmOverloads constructor(
 
 class OverlayView(context: Context, parent: ViewManager, private val anchorView: View) : View(context) {
 
-    private val TAG = "OverlayView"
+    private val tag = this::class.java.simpleName
 
     private val dimColor = context.getColor(R.color.dim)
 
@@ -97,6 +97,7 @@ class OverlayView(context: Context, parent: ViewManager, private val anchorView:
 
         anchorView.getLocationInWindow(anchorViewLocation)
 
+        //TODO: init not here
         val anchorCenter = PointF(
             anchorViewLocation[0].toFloat() + anchorView.width / 2,
             anchorViewLocation[1].toFloat() + anchorView.height / 2
