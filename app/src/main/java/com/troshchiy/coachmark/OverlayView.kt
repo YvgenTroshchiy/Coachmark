@@ -33,56 +33,49 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
     private val anchorRadius = 28.dpToPx.toFloat()
     private val anchorViewLocation = IntArray(2)
 
-    private val detailsRadius = 180.dpToPx.toFloat()
+    private val outerCircleRadius = 180.dpToPx.toFloat()
+
+    private val bgTargetAlpha = 0.6f
+    private val outerCircleTargetAlpha = 0.6f
 
     private var bgAlpha = 0f
-    private val bgTargetAlpha = 0.6f
+    private var outerCircleAlpha = 0f
 
-    private val detailsTargetAlpha = 0.6f
-    private var detailsAlpha = 0f
+    private val outerCirclePaint = Paint().apply { color = context.getColor(R.color.details_color) }
 
-    private val detailsCirclePaint = Paint().apply { color = context.getColor(R.color.details_color) }
+    private val outerCircleXOffsetRatio = 0.92f
+    private val outerCircleYOffsetRatio = 1.7f
 
-    private val detailsCircleXOffsetRatio = 0.92f
-    private val detailsCircleYOffsetRatio = 1.7f
+    private val bgAnimator = ValueAnimator.ofFloat(0f, bgTargetAlpha).apply {
+        duration = 500
+        interpolator = AccelerateDecelerateInterpolator()
 
-    private val detailsPaint = Paint().apply {
-        isAntiAlias = true
-        color = context.getColor(R.color.details_color)
+        addUpdateListener { animation ->
+            bgAlpha = (animation.animatedValue as Float)
+            invalidate()
+        }
     }
 
+    private val outerCircleAnimator = ValueAnimator.ofFloat(0f, outerCircleTargetAlpha).apply {
+        duration = 300
+        interpolator = AccelerateDecelerateInterpolator()
+
+        addUpdateListener { animation ->
+            outerCircleAlpha = (animation.animatedValue as Float)
+            invalidate()
+        }
+    }
+
+    private val animators: Array<ValueAnimator> = arrayOf(bgAnimator, outerCircleAnimator)
 
     init {
-        val bgAnimator = ValueAnimator.ofFloat(0f, bgTargetAlpha).apply {
-            duration = 500
-            interpolator = AccelerateDecelerateInterpolator()
-
-            addUpdateListener { animation ->
-                bgAlpha = (animation.animatedValue as Float)
-                invalidate()
-            }
-        }
+        outerCircleAnimator.start()
         postDelayed({ bgAnimator.start() }, 100)
-//        bgAnimator.start()
-
-        val detailsAnimator = ValueAnimator.ofFloat(0f, detailsTargetAlpha).apply {
-            duration = 300
-            interpolator = AccelerateDecelerateInterpolator()
-
-            addUpdateListener { animation ->
-                detailsAlpha = (animation.animatedValue as Float)
-                invalidate()
-            }
-        }
-//        detailsAnimator.start()
-        postDelayed({ detailsAnimator.start() }, 0)
     }
 
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-//        Log.i("OverlayView", "onDraw. detailsAlpha: $detailsAlpha")
 
         anchorView.getLocationInWindow(anchorViewLocation)
 
@@ -93,39 +86,14 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
         val anchorCirclePath = Path().apply {
             addCircle(anchorCenter.x, anchorCenter.y, anchorRadius, Path.Direction.CW)
         }
-        val detailsCircleCenter =
-            PointF(
-                anchorCenter.x * detailsCircleXOffsetRatio,
-                anchorCenter.y * detailsCircleYOffsetRatio
-            )
-        val detailsCirclePath = Path().apply {
-            addCircle(
-                detailsCircleCenter.x,
-                detailsCircleCenter.y,
-                detailsRadius,
-                Path.Direction.CW
-            )
-        }
+
+        val detailsCircleCenter = PointF(anchorCenter.x * outerCircleXOffsetRatio, anchorCenter.y * outerCircleYOffsetRatio)
 
         clipOutPath(canvas, anchorCirclePath)
-
         canvas.drawColor(setAlpha(dimColor, bgAlpha))
 
-        detailsCirclePaint.alpha = (detailsAlpha * 255.0f).toInt()
-        canvas.drawCircle(detailsCircleCenter.x, detailsCircleCenter.y, detailsRadius, detailsCirclePaint)
-
-//        canvas.drawCircle(anchorCenter.x, anchorCenter.y, anchorRadius, Paint().apply { color = context.getColor(R.color.details_color) })
-
-        // Draw details circle
-//        canvas.save()
-//        clipOutPath(canvas, anchorCirclePath)
-//        canvas.drawCircle(detailsCircleCenter.x, detailsCircleCenter.y, detailsRadius, detailsPaint)
-//        canvas.restore()
-
-        // Draw background
-//        canvas.save()
-//        clipOutPath(canvas, detailsCirclePath)
-//        canvas.drawColor(context.getColor(R.color.bg_dim))
+        outerCirclePaint.alpha = (outerCircleAlpha * 255.0f).toInt()
+        canvas.drawCircle(detailsCircleCenter.x, detailsCircleCenter.y, outerCircleRadius, outerCirclePaint)
     }
 
     private fun clipOutPath(canvas: Canvas, path: Path) {
@@ -134,6 +102,11 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
         } else {
             canvas.clipPath(path, Region.Op.DIFFERENCE);
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        animators.forEach { it.removeAllUpdateListeners() }
     }
 
     /** Modifies the alpha value of the given ARGB color  */
