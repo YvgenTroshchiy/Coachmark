@@ -26,12 +26,15 @@ class MainActivity : AppCompatActivity() {
         val anchorView = findViewById<ImageView>(R.id.heart)
 
         val rootView = anchorView.rootView as ViewGroup
-        val view = OverlayView(this, anchorView)
+        val overlayView = OverlayView(this, anchorView)
 //        rootView.addView(view)
+
+        val decorView = window.decorView as ViewGroup
+        decorView.addView(overlayView)
 
         val o = 0
 
-        anchorView.setOnClickListener { showTapTargetView() }
+//        anchorView.setOnClickListener { showTapTargetView() }
     }
 
     private fun showTapTargetView() {
