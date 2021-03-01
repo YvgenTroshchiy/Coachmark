@@ -47,6 +47,7 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
     private val outerCircleYOffsetRatio = 1.7f
 
     private val dimAnimator = ValueAnimator.ofFloat(0f, dimTargetAlpha).apply {
+        startDelay = 100
         duration = 500
         interpolator = AccelerateDecelerateInterpolator()
 
@@ -69,8 +70,8 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
     private val animators: Array<ValueAnimator> = arrayOf(dimAnimator, outerCircleAnimator)
 
     init {
+        dimAnimator.start()
         outerCircleAnimator.start()
-        postDelayed({ dimAnimator.start() }, 100)
     }
 
     @SuppressLint("DrawAllocation")

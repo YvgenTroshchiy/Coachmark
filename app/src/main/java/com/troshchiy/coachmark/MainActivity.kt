@@ -23,8 +23,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val decorView = window.decorView as ViewGroup
-
         val share = findViewById<ImageView>(R.id.share)
         val heart = findViewById<ImageView>(R.id.heart)
 
