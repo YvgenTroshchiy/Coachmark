@@ -23,18 +23,16 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val anchorView = findViewById<ImageView>(R.id.heart)
-
-        val rootView = anchorView.rootView as ViewGroup
-        val overlayView = OverlayView(this, anchorView)
-//        rootView.addView(view)
-
         val decorView = window.decorView as ViewGroup
-        decorView.addView(overlayView)
 
-        val o = 0
+        val share = findViewById<ImageView>(R.id.share)
+        val heart = findViewById<ImageView>(R.id.heart)
 
-//        anchorView.setOnClickListener { showTapTargetView() }
+        share.setOnClickListener { showTapTargetView() }
+        heart.setOnClickListener {
+            val overlayView = OverlayView(this, heart)
+            (window.decorView as ViewGroup).addView(overlayView)
+        }
     }
 
     private fun showTapTargetView() {
@@ -47,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             .outerCircleAlpha(0.85f)
             .cancelable(false)
             .drawShadow(true)
-            .dimColor(R.color.bg_dim)
+            .dimColor(R.color.bg)
             .titleTextColor(R.color.black)
             .titleTextDimen(R.dimen.title_text_size)
             .tintTarget(false), object : TapTargetView.Listener() {
