@@ -8,6 +8,7 @@ import android.graphics.*
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewManager
 import android.view.animation.AccelerateDecelerateInterpolator
 
 val Int.dpToPx: Int
@@ -24,7 +25,7 @@ class ClippedView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 }
 
-class OverlayView(context: Context, private val anchorView: View) : View(context) {
+class OverlayView(context: Context, parent: ViewManager, private val anchorView: View) : View(context) {
 
     private val TAG = "OverlayView"
 
@@ -72,6 +73,11 @@ class OverlayView(context: Context, private val anchorView: View) : View(context
     init {
         dimAnimator.start()
         outerCircleAnimator.start()
+
+        setOnClickListener {
+            //TODO: start end animation
+            parent.removeView(this)
+        }
     }
 
     @SuppressLint("DrawAllocation")

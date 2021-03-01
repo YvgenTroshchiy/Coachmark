@@ -3,9 +3,7 @@ package com.troshchiy.coachmark
 import android.os.Bundle
 import android.text.SpannableString
 import android.util.Log
-import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,8 +26,9 @@ class MainActivity : AppCompatActivity() {
 
         share.setOnClickListener { showTapTargetView() }
         heart.setOnClickListener {
-            val overlayView = OverlayView(this, heart)
-            (window.decorView as ViewGroup).addView(overlayView)
+            val decorView = window.decorView as ViewGroup
+            val overlayView = OverlayView(this, decorView, heart)
+            decorView.addView(overlayView)
         }
     }
 
@@ -38,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         val spannedDesc = SpannableString("Still deciding? Favorite it for price drop alerts.")
         //        spannedDesc.setSpan(UnderlineSpan(), spannedDesc.length - "TapTargetView".length, spannedDesc.length, 0)
 
-        TapTargetView.showFor(this, TapTarget.forView(findViewById(R.id.heart), "Want it? Heart it.", spannedDesc)
+        TapTargetView.showFor(this, TapTarget.forView(findViewById(R.id.share), "Want it? Heart it.", spannedDesc)
             .outerCircleColor(R.color.white)
             .outerCircleAlpha(0.85f)
             .cancelable(false)
@@ -62,14 +61,5 @@ class MainActivity : AppCompatActivity() {
                 Log.d("TapTargetViewSample", "You dismissed me :(")
             }
         })
-    }
-
-    private fun findFrameLayout(anchorView: View): ViewGroup {
-        var rootView = anchorView.rootView as ViewGroup
-
-        if (rootView.childCount == 1 && rootView.getChildAt(0) is FrameLayout) {
-            rootView = rootView.getChildAt(0) as ViewGroup
-        }
-        return rootView
     }
 }
