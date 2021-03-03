@@ -30,7 +30,7 @@ class OverlayView(context: Context, parent: ViewManager, private val anchorView:
 
     private val tag = this::class.java.simpleName
 
-    private val dimColor = context.getColor(R.color.dim)
+    private val dimColor = context.getColor(R.color.coachmark_dim)
 
     private val anchorRadius = 28.dpToPx.toFloat()
     private val anchorViewLocation = IntArray(2)
@@ -43,7 +43,7 @@ class OverlayView(context: Context, parent: ViewManager, private val anchorView:
     private var dimAlpha = 0f
     private var outerCircleAlpha = 0f
 
-    private val outerCirclePaint = Paint().apply { color = context.getColor(R.color.outer_circle) }
+    private val outerCirclePaint = Paint().apply { color = context.getColor(R.color.coachmark_outer_circle) }
 
     private val outerCircleXOffsetRatio = 0.92f
     private val outerCircleYOffsetRatio = 1.7f

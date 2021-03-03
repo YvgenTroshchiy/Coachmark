@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             .outerCircleAlpha(0.85f)
             .cancelable(false)
             .drawShadow(true)
-            .dimColor(R.color.dim)
+            .dimColor(R.color.coachmark_dim)
             .titleTextColor(R.color.black)
             .titleTextDimen(R.dimen.title_text_size)
             .tintTarget(false), object : TapTargetView.Listener() {
