@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
 import android.os.Build
-import android.util.AttributeSet
 import android.view.View
 import android.view.ViewManager
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -19,14 +18,7 @@ val Int.dpToPx: Int
 val Float.dpToPx: Int
     get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
 
-
-class ClippedView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : View(context, attrs, defStyleAttr) {
-}
-
+@SuppressLint("ViewConstructor")
 class Coachmark(context: Context, parent: ViewManager, private val anchorView: View) : View(context) {
 
     private val tag = this::class.java.simpleName
@@ -44,6 +36,7 @@ class Coachmark(context: Context, parent: ViewManager, private val anchorView: V
     private var dimAlpha = 0f
     private var outerCircleAlpha = 0f
 
+    private val anchorCirclePath = Path()
     private val outerCirclePaint = Paint().apply { color = context.getColor(R.color.coachmark_outer_circle) }
 
     private val outerCircleXOffsetRatio = 0.92f
@@ -107,7 +100,7 @@ class Coachmark(context: Context, parent: ViewManager, private val anchorView: V
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        val anchorCirclePath = Path().apply {
+        anchorCirclePath.apply {
             addCircle(anchorCenter.x, anchorCenter.y, anchorRadius, Path.Direction.CW)
         }
 
