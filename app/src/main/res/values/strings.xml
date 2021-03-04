@@ -1,3 +1,7 @@
 <resources>
+
     <string name="app_name">Coachmark</string>
+
+    <string name="favorite_lightweight_coachmark_description">Want it but still deciding? Favorite it for price drop alerts.</string>
+
 </resources>
