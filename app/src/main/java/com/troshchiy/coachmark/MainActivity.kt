@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showFullCoachmark(heart: ImageView) {
         val decorView = window.decorView as ViewGroup
-        val overlayView = OverlayView(this, decorView, heart)
+        val overlayView = Coachmark(this, decorView, heart)
         decorView.addView(overlayView)
     }
 

@@ -26,7 +26,7 @@ class ClippedView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 }
 
-class OverlayView(context: Context, parent: ViewManager, private val anchorView: View) : View(context) {
+class Coachmark(context: Context, parent: ViewManager, private val anchorView: View) : View(context) {
 
     private val tag = this::class.java.simpleName
 
@@ -79,7 +79,7 @@ class OverlayView(context: Context, parent: ViewManager, private val anchorView:
             invalidate()
         }
 
-        doOnEnd { parent.removeView(this@OverlayView) }
+        doOnEnd { parent.removeView(this@Coachmark) }
     }
 
     private val animators: Array<ValueAnimator> = arrayOf(dimAnimator, outerCircleAnimator, endAnimator)
