@@ -14,4 +14,6 @@
     <color name="coachmark_dim">#1D1D1D</color>
     <color name="coachmark_outer_circle">#FFFFFF</color>
 
+    <color name="spot_highlight_green_light">#D7FFED</color>
+
 </resources>

@@ -26,9 +26,8 @@ class MainActivity : AppCompatActivity() {
 
         share.setOnClickListener { showTapTargetView() }
         heart.setOnClickListener {
-            val decorView = window.decorView as ViewGroup
-            val overlayView = OverlayView(this, decorView, heart)
-            decorView.addView(overlayView)
+//            showFullCoachmark(heart)
+            showLightweightCoachmark(heart)
         }
     }
 
@@ -64,5 +63,17 @@ class MainActivity : AppCompatActivity() {
                     Log.d("TapTargetViewSample", "You dismissed me :(")
                 }
             })
+    }
+
+    private fun showFullCoachmark(heart: ImageView) {
+        val decorView = window.decorView as ViewGroup
+        val overlayView = OverlayView(this, decorView, heart)
+        decorView.addView(overlayView)
+    }
+
+    private fun showLightweightCoachmark(heart: ImageView) {
+        val decorView = window.decorView as ViewGroup
+        val overlayView = LightweightCoachmark(this, decorView, heart)
+        decorView.addView(overlayView)
     }
 }
