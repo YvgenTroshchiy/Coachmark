@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
     android:elevation="4dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:layout_width="260dp"
+    android:orientation="vertical"
+    tools:background="#FFBCBC">
 
     <TextView
         android:id="@+id/description"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:text="@string/favorite_lightweight_coachmark_description" />
 
     <Button
         android:id="@+id/gotIt"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
         android:layout_width="wrap_content"
         android:text="GOT IT" />
 
