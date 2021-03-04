@@ -17,6 +17,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/heartLight"
+            android:layout_gravity="end"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_heart" />
+
+        <ImageView
             android:id="@+id/heart"
             android:layout_gravity="end"
             android:layout_height="wrap_content"

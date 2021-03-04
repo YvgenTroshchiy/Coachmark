@@ -23,12 +23,11 @@ class MainActivity : AppCompatActivity() {
 
         val share = findViewById<ImageView>(R.id.share)
         val heart = findViewById<ImageView>(R.id.heart)
+        val heartLight = findViewById<ImageView>(R.id.heartLight)
 
         share.setOnClickListener { showTapTargetView() }
-        heart.setOnClickListener {
-//            showFullCoachmark(heart)
-            showLightweightCoachmark(heart)
-        }
+        heart.setOnClickListener { showFullCoachmark(heart) }
+        heartLight.setOnClickListener { showLightweightCoachmark(heartLight) }
     }
 
     private fun showTapTargetView() {

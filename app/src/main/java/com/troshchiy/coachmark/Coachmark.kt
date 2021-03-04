@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewManager
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.animation.doOnEnd
+import androidx.core.view.doOnLayout
 
 val Int.dpToPx: Int
     get() = this.toFloat().dpToPx
@@ -84,7 +85,18 @@ class Coachmark(context: Context, parent: ViewManager, private val anchorView: V
 
     private val animators: Array<ValueAnimator> = arrayOf(dimAnimator, outerCircleAnimator, endAnimator)
 
+    lateinit var anchorCenter: PointF
+
     init {
+        anchorView.doOnLayout {
+            anchorView.getLocationInWindow(anchorViewLocation)
+
+            anchorCenter = PointF(
+                anchorViewLocation[0].toFloat() + anchorView.width / 2,
+                anchorViewLocation[1].toFloat() + anchorView.height / 2
+            )
+        }
+
         dimAnimator.start()
         outerCircleAnimator.start()
 
@@ -95,13 +107,6 @@ class Coachmark(context: Context, parent: ViewManager, private val anchorView: V
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        anchorView.getLocationInWindow(anchorViewLocation)
-
-        //TODO: init not here
-        val anchorCenter = PointF(
-            anchorViewLocation[0].toFloat() + anchorView.width / 2,
-            anchorViewLocation[1].toFloat() + anchorView.height / 2
-        )
         val anchorCirclePath = Path().apply {
             addCircle(anchorCenter.x, anchorCenter.y, anchorRadius, Path.Direction.CW)
         }
