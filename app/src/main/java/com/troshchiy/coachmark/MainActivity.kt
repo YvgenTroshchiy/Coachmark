@@ -36,33 +36,34 @@ class MainActivity : AppCompatActivity() {
         val spannedDesc = SpannableString("Still deciding? Favorite it for price drop alerts.")
         //        spannedDesc.setSpan(UnderlineSpan(), spannedDesc.length - "TapTargetView".length, spannedDesc.length, 0)
 
-        TapTargetView.showFor(
-            this,
-            TapTarget.forView(findViewById(R.id.share), "Want it? Heart it.", spannedDesc)
-                .outerCircleColor(R.color.white)
-                .outerCircleAlpha(0.85f)
-                .cancelable(false)
-                .drawShadow(true)
-                .dimColor(R.color.coachmark_dim)
-                .titleTextColor(R.color.black)
-                .titleTextDimen(R.dimen.title_text_size)
-                .tintTarget(false),
-            object : TapTargetView.Listener() {
-                override fun onTargetClick(view: TapTargetView) {
-                    super.onTargetClick(view)
-                    // .. which evidently starts the sequence we defined earlier
-                    //                sequence.start()
-                }
+        val tintTarget = TapTarget.forView(findViewById(R.id.share), "Want it? Heart it.", spannedDesc)
+            .outerCircleColor(R.color.white)
+            .outerCircleAlpha(0.85f)
+            .cancelable(false)
+            .drawShadow(true)
+            .dimColor(R.color.coachmark_dim)
+            .titleTextColor(R.color.black)
+            .titleTextDimen(R.dimen.title_text_size)
+            .tintTarget(false)
 
-                override fun onOuterCircleClick(view: TapTargetView) {
-                    super.onOuterCircleClick(view)
-                    Toast.makeText(view.context, "You clicked the outer circle!", Toast.LENGTH_SHORT).show()
-                }
+        val listener = object : TapTargetView.Listener() {
+            override fun onTargetClick(view: TapTargetView) {
+                super.onTargetClick(view)
+                // .. which evidently starts the sequence we defined earlier
+                //                sequence.start()
+            }
 
-                override fun onTargetDismissed(view: TapTargetView, userInitiated: Boolean) {
-                    Log.d("TapTargetViewSample", "You dismissed me :(")
-                }
-            })
+            override fun onOuterCircleClick(view: TapTargetView) {
+                super.onOuterCircleClick(view)
+                Toast.makeText(view.context, "You clicked the outer circle!", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onTargetDismissed(view: TapTargetView, userInitiated: Boolean) {
+                Log.d("TapTargetViewSample", "You dismissed me :(")
+            }
+        }
+
+        TapTargetView.showFor(this, tintTarget, listener)
     }
 
     private fun showFullCoachmark(heart: ImageView) {
