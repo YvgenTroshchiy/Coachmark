@@ -19,7 +19,11 @@ val Float.dpToPx: Int
     get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
 
 @SuppressLint("ViewConstructor")
-class Coachmark(context: Context, parent: ViewManager, private val anchorView: View) : View(context) {
+class Coachmark(
+    context: Context,
+    parent: ViewManager,
+    private val anchorView: View
+) : View(context) {
 
     private val tag = this::class.java.simpleName
 
