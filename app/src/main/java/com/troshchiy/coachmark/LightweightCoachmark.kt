@@ -1,9 +1,8 @@
 package com.troshchiy.coachmark
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PointF
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewManager
@@ -11,12 +10,14 @@ import android.widget.Button
 import android.widget.FrameLayout
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.doOnLayout
+import kotlin.math.max
 
+@SuppressLint("ViewConstructor")
 class LightweightCoachmark constructor(context: Context, anchorView: View) : FrameLayout(context, null, 0) {
 
     private val tag = this::class.java.simpleName
 
-//    private var isShown: Boolean = false
+    private var isShownCoachmark = false
 
     init {
         val anchorCenter = getAnchorCenter(anchorView)
@@ -28,24 +29,14 @@ class LightweightCoachmark constructor(context: Context, anchorView: View) : Fra
 
         val coachmarkDescription = dialog.findViewById<LinearLayoutCompat>(R.id.coachmarkDescription)
         coachmarkDescription.doOnLayout {
-            Log.w(tag, "w: ${coachmarkDescription.width}")
-            val horizontalPadding = context.resources.getDimension(R.dimen.horizontal_padding)
+            val defaultMargin = context.resources.getDimension(R.dimen.default_margin)
 
-            coachmarkDescription.x = anchorCenter.x - coachmarkDescription.width
-            coachmarkDescription.y = anchorCenter.y
+            val widthAnchor = anchorCenter.x - coachmarkDescription.width
+            val widthParent = width - coachmarkDescription.width - defaultMargin
+
+            coachmarkDescription.x = max(widthAnchor, widthParent)
+            coachmarkDescription.y = anchorCenter.y + LightweightCoachmarkCircle.radius + defaultMargin
         }
-
-
-//        dialog.x = anchorCenter.x - dialog.width
-//        dialog.translationY = 200f
-
-
-//        val layoutParams = dialog.layoutParams as LinearLayoutCompat.LayoutParams
-
-        val layoutParams = FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT).apply {
-            gravity = Gravity.RIGHT
-        }
-//        dialog.layoutParams = layoutParams
     }
 
     private fun close() {

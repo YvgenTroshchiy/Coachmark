@@ -1,20 +1,22 @@
 package com.troshchiy.coachmark
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.view.View
 
-class LightweightCoachmarkCircle(
-    context: Context,
-    var anchorCenter: PointF
-) : View(context) {
+@SuppressLint("ViewConstructor")
+class LightweightCoachmarkCircle(context: Context, var center: PointF) : View(context) {
+
+    companion object {
+        val radius = 28.dpToPx.toFloat()
+    }
 
     private val tag = this::class.java.simpleName
 
-    private val anchorRadius = 28.dpToPx.toFloat()
+    private val path = Path()
 
-    private val anchorCirclePath = Path()
-    private val anchorCirclePaint = Paint().apply {
+    private val paint = Paint().apply {
         color = context.getColor(R.color.spot_highlight_green_light)
         xfermode = PorterDuffXfermode(PorterDuff.Mode.MULTIPLY)
     }
@@ -22,10 +24,10 @@ class LightweightCoachmarkCircle(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        anchorCirclePath.apply {
-            addCircle(anchorCenter.x, anchorCenter.y, anchorRadius, Path.Direction.CW)
+        path.apply {
+            addCircle(center.x, center.y, radius, Path.Direction.CW)
         }
 
-        canvas.drawPath(anchorCirclePath, anchorCirclePaint)
+        canvas.drawPath(path, paint)
     }
 }
