@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showLightweightCoachmark(heart: ImageView) {
         val decorView = window.decorView as ViewGroup
-        val overlayView = LightweightCoachmark(this, heart)
+        val overlayView = LightweightCoachmark(this, CoachmarkTarget(heart))
         decorView.addView(overlayView)
     }
 }
