@@ -4,26 +4,21 @@ import android.content.Context
 import android.graphics.PointF
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewManager
 import android.widget.Button
 import android.widget.FrameLayout
 
-class LightweightCoachmark constructor(
-    context: Context,
-    parent: ViewGroup,
-    anchorView: View
-) : FrameLayout(context, null, 0) {
-
+class LightweightCoachmark constructor(context: Context, anchorView: View) : FrameLayout(context, null, 0) {
 
     init {
         addView(LightweightCoachmarkCircle(context, getAnchorCenter(anchorView)))
 
         val dialog = LayoutInflater.from(context).inflate(R.layout.lightweight_coachmark_description, this, true)
-        dialog.findViewById<Button>(R.id.gotIt).setOnClickListener {
-            (parent as ViewManager).removeView(this@LightweightCoachmark)
-        }
+        dialog.findViewById<Button>(R.id.gotIt).setOnClickListener { close() }
+    }
 
+    private fun close() {
+        (parent as ViewManager).removeView(this@LightweightCoachmark)
     }
 
     private fun getAnchorCenter(anchorView: View): PointF {
