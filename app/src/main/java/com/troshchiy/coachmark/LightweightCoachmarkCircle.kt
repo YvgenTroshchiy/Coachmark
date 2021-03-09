@@ -6,7 +6,11 @@ import android.view.View
 import android.view.ViewManager
 import androidx.core.view.doOnLayout
 
-class LightweightCoachmarkCircle(context: Context, parent: ViewManager, private val anchorView: View) : View(context) {
+class LightweightCoachmarkCircle(
+    context: Context,
+    parent: ViewManager,
+    private val anchorView: View
+) : View(context) {
 
     private val tag = this::class.java.simpleName
 
