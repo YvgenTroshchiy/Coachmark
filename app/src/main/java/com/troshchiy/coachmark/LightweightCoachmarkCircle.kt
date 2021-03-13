@@ -28,6 +28,6 @@ class LightweightCoachmarkCircle(context: Context, var center: PointF) : View(co
             addCircle(center.x, center.y, radius, Path.Direction.CW)
         }
 
-        canvas.drawPath(path, paint)
+        canvas.drawCircle(center.x, center.y, radius, paint)
     }
 }
