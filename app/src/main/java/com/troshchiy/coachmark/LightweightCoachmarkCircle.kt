@@ -14,8 +14,6 @@ class LightweightCoachmarkCircle(context: Context, var center: PointF) : View(co
 
     private val tag = this::class.java.simpleName
 
-    private val path = Path()
-
     private val paint = Paint().apply {
         color = context.getColor(R.color.spot_highlight_green_light)
         xfermode = PorterDuffXfermode(PorterDuff.Mode.MULTIPLY)
@@ -23,11 +21,6 @@ class LightweightCoachmarkCircle(context: Context, var center: PointF) : View(co
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        path.apply {
-            addCircle(center.x, center.y, radius, Path.Direction.CW)
-        }
-
         canvas.drawCircle(center.x, center.y, radius, paint)
     }
 }
